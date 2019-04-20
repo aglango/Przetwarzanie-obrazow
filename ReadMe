@@ -1,0 +1,65 @@
+1. Obrazy wejściowe 
+ 
+Do zobrazowania efektów działania napisanego programu użyto po jednym obrazie logicznym, 
+monochromatycznym i kolorowym w skali barw RGB. 
+
+2. Regionprops 
+a. Centroid 
+Funkcja centroid wyznacza środek ciężkości figury (w tym przypadku obrazu). Wartość wyznaczono poprzez 
+obliczenie średniej ważonej z wartości poszczególnych składowych piksela. Dlatego dla obrazu RGB 
+otrzymano 3 wartości centroidu. 
+ 
+Obraz monochromatyczny:  
+0.45429810566228 
+ 
+Obraz RGB: 
+0.7073503934518807 
+0.41085766012602043 
+0.4276010209957343 
+  
+ 
+b. Bounding Box 
+Funkcja Bounding Box wyznacza wspołrzedne wierzcholkow prostokąta ograniczającego obszar figury. 
+Bounding Box wyznaczono tylko dla obszaru monochromatycznego. Było to możliwe dzięki binaryzacji tego 
+obrazu odcięciem 0.05. 
+
+Obraz monochromatyczny: 
+X min: 25 
+X max: 190 
+Y min: 38 
+Y max: 255 
+ 
+ 
+3. Filtracja Kirscha 
+ 
+Filtracja operatorem Kirscha polega na tym, że dla każdego piksela wybierane jest maksimum z filtracji 
+8 różnymi maskami. Pierwsza maska wygląda następująco: 
+5 5 5 
+−3 0 −3 
+−3 −3 −3
+ 
+Każda następna maska jest obrócona względem niej o 45 stopni. Filtracja pojedynczego piksela 
+polega na sumomnożeniu składowej wartości piksela sąsiadującego z elementem centralnym z odpowiadającym 
+mu elementem macierzy. Dla obrazu kolorowego każda składowa podlegała operacji filtracji osobno, a efekt 
+został przedstawiony na wspólnym obrazie po znormalizowaniu wyniku tak, aby mieścił się w przedziale [0, 1]. 
+ 
+ 
+4. Gradient morfologiczny  
+ 
+Do implementacji gradientu morfologicznego każdym ze sposobów potrzebna była implementacja operacji 
+dylatacji oraz erozji elementem ones(3). Następnie dla każdego piksela wyznaczono odpowiednią różnicę 
+między dwoma obrazami w zależności od sposobu. 
+a. Różnica między obrazem wejściowym, a wynikiem jego erozji  
+b. Różnica między wynikiem dylatacji a obrazem wejściowym 
+c. Różnica między wynikiem dylatacji obrazu wejściowego, a jego erozją  
+
+ 
+5. Usunięcie elementów przeciętych brzegiem 
+ 
+Aby usunąć elementy ucięte brzegiem na obrazie logicznym koniecznym było rozdzielenie elementów od siebie. 
+W tym celu każdy piksel sprawdzano czy ma sąsiednie piksele. Jeśli tak to przyłączano do tego regionu, a jeśli
+nie to tworzono nowy. Następnie ponownie sprawdzono wszystkie regiony aby połączyć te które nieprawidłowo 
+zostały sklasyfikowane jako inny region. Z tak przygotowanych obiektów usunięto te, które stykały się 
+z brzegami obrazu z dokładnością do 3 pikseli.  
+ 
+ 
